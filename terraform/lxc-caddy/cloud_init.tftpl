@@ -19,6 +19,7 @@ apt-get update -qq && apt-get install -y caddy
 
 echo '@reboot root caddy start --config /etc/caddy/Caddyfile' > /etc/cron.d/caddy
 
+# sur une CT proxmox caddy fait n'importe quoi avec les namespace linux donc c'est un petit workaround
 mkdir -p /etc/systemd/system/caddy.service.d/
 cat > /etc/systemd/system/caddy.service.d/override.conf << 'EOF'
 [Service]

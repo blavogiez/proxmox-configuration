@@ -3,3 +3,11 @@
 *lock*
 .terraform
 config.yml
+node_modules
+
+temp.sh
+*key
+*.pub
+.env
+
+j*a*on.*

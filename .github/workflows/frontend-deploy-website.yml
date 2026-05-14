@@ -1,0 +1,48 @@
+name: (FRONTEND) - Deploiement de tous les sites décrits
+
+on:
+  push:
+    branches: [main, frontend/*]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Config SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.FRONT_SSH_KEY }}
+
+      - name: Config SSH no strict host checking
+        run: |
+          mkdir -p ~/.ssh
+          echo "StrictHostKeyChecking no" >> ~/.ssh/config
+          chmod 600 ~/.ssh/config
+
+      - uses: actions/checkout@v4
+
+      - name: Installer ansible
+        run: |
+          pipx install ansible-core
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          export PATH="$HOME/.local/bin:$PATH"
+
+      - name: Appeler les playbooks pour les sites
+        env:
+          FRONT_HOST: ${{ secrets.FRONT_HOST }}
+          FRONT_USER: ${{ secrets.FRONT_USER }}
+        run: |
+          ./websites/deploy_all.sh
+
+# job test après ?
+          

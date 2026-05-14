@@ -3,6 +3,8 @@ credentials-file: /root/.cloudflared/<TUNNEL_UUID>.json
 
 ingress:
   # wildcard to caddy
+  - hostname: "blavogiez.fr"
+    service: http://<CADDY_LXC_IP>:80
   - hostname: "*.blavogiez.fr"
     service: http://<CADDY_LXC_IP>:80
 
