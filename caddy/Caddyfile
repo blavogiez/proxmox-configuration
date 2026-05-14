@@ -1,9 +1,14 @@
-# test, à étendre après 
+# Entree HTTP depuis cloudflared.
 
 {
     auto_https off
 }
 
 http://openlatex-api.blavogiez.fr {
-    reverse_proxy 192.168.1.148
+    reverse_proxy 192.168.1.148:80
+}
+
+# Tout ce qui est front va sur la CT optimisee (qui a un caddy gitops généré par Ansible)
+:80 {
+    reverse_proxy 192.168.1.5:80
 }
